@@ -5,11 +5,13 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
 
-    public GameObject prefab;
+    public GameObject[] prefabs;
 
     public void Spawn()
     {
-        Debug.Log("Try spawn");
+        Debug.Log("Try spawn!");
+
+        var prefab = GetRandomPrefab();
 
         if (prefab == null)
         {
@@ -20,4 +22,15 @@ public class Spawner : MonoBehaviour
         Instantiate(prefab, transform.position, Quaternion.identity);
     }
 
+    private GameObject GetRandomPrefab()
+    {
+        if (prefabs.Length == 0)
+        {
+            Debug.LogError("Spawner - prefabsis empty!");
+            return null;
+        }
+
+        int index = Random.Range(0, prefabs.Length);
+        return prefabs[index];
+    }
 }
