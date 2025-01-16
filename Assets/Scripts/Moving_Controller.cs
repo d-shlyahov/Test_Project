@@ -9,7 +9,7 @@ namespace Test_Project
 
         public Transform[] targets;
         public float moveSpeed = 10f;
-        public Transform cloud;
+        public Cloud cloud;
 
         private int m_targetIndex = 0;
         private bool m_moved = false;
@@ -25,6 +25,7 @@ namespace Test_Project
             }
 
             m_moved = true;
+            cloud.StopFX();
 
             m_targetIndex++;
             if (m_targetIndex >= targets.Length)
@@ -41,17 +42,18 @@ namespace Test_Project
             }
 
             Transform target = targets[m_targetIndex];
-            Vector3 targetPosition = new Vector3(target.position.x, cloud.position.y, target.position.z);
-            Vector3 offset = (targetPosition - cloud.position).normalized * moveSpeed * Time.deltaTime;
+            Vector3 targetPosition = new Vector3(target.position.x, cloud.transform.position.y, target.position.z);
+            Vector3 offset = (targetPosition - cloud.transform.position).normalized * moveSpeed * Time.deltaTime;
 
-            if (Vector3.Distance(cloud.position, targetPosition) < offset.magnitude)
+            if (Vector3.Distance(cloud.transform.position, targetPosition) < offset.magnitude)
             {
-                cloud.position = targetPosition;
+                cloud.transform.position = targetPosition;
                 m_moved = false;
+                cloud.PlayFX();
             }
             else
             {
-                cloud.Translate(offset);
+                cloud.transform.Translate(offset);
             }
 
         }
